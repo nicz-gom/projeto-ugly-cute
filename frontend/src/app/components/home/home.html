@@ -1,0 +1,229 @@
+<main id="inicio">
+  <header class="name" data-reveal>
+    <img class="logo" src="assets/logo.png" alt="Logo" aria-hidden="true" />
+    <div class="logo-search">
+      <div class="name-logo">
+        <h2 class="ugly">Ugly</h2>
+        <h2 class="cute">Cute</h2>
+      </div>
+      <div class="content-search">
+        <form>
+          <input
+            class="inSearch"
+            type="text"
+            placeholder="Encontrar Elemental - digite o nome para buscá-lo..."
+            [value]="searchTerm"
+            (input)="onSearchTermChange($any($event.target).value)"
+          />
+          <button class="filter" type="button" (click)="toggleFilterMenu(); $event.stopPropagation()" aria-label="Abrir ou fechar filtros" [attr.aria-expanded]="isFilterMenuOpen">
+            <img class="filter-icon" src="assets\filtro.png" alt="Filtro de pesquisa!">
+          </button>
+          <button class="btSearch" type="button"><img class="search-icon" src="assets\lupa.png" alt="Lupa icon">Pesquisar</button>
+        </form>
+      </div>
+    </div>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#products-title">Produtos</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <button
+      class="cart-button"
+      type="button"
+      (click)="toggleCart()"
+      [attr.aria-expanded]="isCartOpen"
+      aria-controls="shopping-cart"
+    >
+      <span class="cart-icon" aria-hidden="true">🛒</span>
+      <span>Carrinho</span>
+      <span class="cart-counter" [class.has-items]="cartItemsCount > 0">{{ cartItemsCount }}</span>
+    </button>
+  </header>
+  <section class="banner" data-reveal>
+    <img class="elemental-left" src="assets\green-elemental.png" alt="Elaris">
+    <div class="title">
+        <h2>BEM-VINDO AO MERCADO DE CRIATURAS CURIOSAS</h2>
+        <p>Descubra o encanto no imperfeito. Peças únicas feitas com amor.</p>
+        <div class="options">
+            <button class="more-explorer">Explorar Elementais</button>
+            <button class="see-new">Ver Novidades</button>
+        </div>
+    </div>
+    <img class="elemental-rigth" src="assets\noix.png" alt="Niox">
+  </section>
+
+  <section class="elementals-showcase" aria-labelledby="elementals-title" data-reveal>
+    <div class="showcase-heading">
+      <h2 id="elementals-title">Elementais em destaque</h2>
+      <p>Deslize para conhecer as criaturas.</p>
+    </div>
+
+    <div class="elementals-scroll">
+      @if (filteredProducts.length === 0) {
+        <p class="no-results">Nada foi encontrado.</p>
+      } @else {
+        @for (product of filteredProducts; track product.id; let index = $index) {
+          <article class="elemental-card" data-reveal [style.transition-delay.ms]="index * 55">
+            <button class="favorite" type="button" [attr.aria-label]="'Adicionar ' + product.name + ' aos favoritos'">♡</button>
+            <img [src]="'assets/' + product.image" [alt]="'Elemental ' + product.name" />
+            <div class="card-content">
+              <h3>{{ product.name }}</h3>
+              <span>{{ product.price | currency: 'BRL' }}</span>
+              <button class="add-cart" type="button" (click)="addToCart(product)">Adicionar ao carrinho</button>
+            </div>
+          </article>
+        }
+      }
+    </div>
+
+    <!--
+    @for (...): Itera sobre o array products. O track product.id otimiza a performance do DOM e let index = $index captura a posição atual do item.
+
+    [style.transition-delay.ms]="index * 55": Cria uma animação em cascata, aplicando um atraso progressivo (55ms, 110ms, 165ms...) na transição CSS de cada card.
+
+    data-reveal: Atributo de marcação, provavelmente o alvo que o seu IntersectionObserver procura para ativar a animação quando o card entra na tela.
+
+    | currency: 'BRL': Pipe nativo que formata o número para o padrão de moeda do Brasil (R$).
+
+    (click)="addToCart(product)": Vincula o evento de clique ao método do componente, passando a referência exata do produto clicado.
+
+    [attr.aria-label]: Gera uma descrição dinâmica para leitores de tela (acessibilidade), como "Adicionar [Nome do Produto] aos favoritos".
+    -->
+
+  </section>
+
+  <section class="products-section" aria-labelledby="products-title" data-reveal>
+    <div class="products-heading">
+      <div>
+        <h2 id="products-title">Todos os produtos</h2>
+        <p>Encontre o elemental perfeito para você.</p>
+      </div>
+      <span class="products-count">{{ filteredProducts.length }} produtos</span>
+    </div>
+
+    <div class="products-grid">
+      @if (filteredProducts.length === 0) {
+        <p class="no-results">Nada foi encontrado.</p>
+      } @else {
+        @for (product of filteredProducts; track product.id; let index = $index) {
+          <article class="product-card" data-reveal [style.transition-delay.ms]="index * 55">
+            <button class="favorite" type="button" [attr.aria-label]="'Adicionar ' + product.name + ' aos favoritos'">♡</button>
+            <img [src]="'assets/' + product.image" [alt]="'Elemental ' + product.name" />
+            <div class="card-content">
+              <h3>{{ product.name }}</h3>
+              <span>{{ product.price | currency: 'BRL' }}</span>
+              <button class="add-cart" type="button" (click)="addToCart(product)">Adicionar ao carrinho</button>
+            </div>
+          </article>
+        }
+      }
+    </div>
+  </section>
+</main>
+
+<footer id="sobre" class="site-footer" data-reveal>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <img src="assets/logo.png" alt="Ugly Cute" />
+      <div>
+        <strong>Ugly <span>Cute</span></strong>
+        <p>Criaturas curiosas feitas para encantar.</p>
+      </div>
+    </div>
+    <nav id="contato" class="footer-links" aria-label="Links do rodapé">
+      <a href="#elementals-title">Destaques</a>
+      <a href="#products-title">Produtos</a>
+      <a href="mailto:contato@uglycute.com">Contato</a>
+    </nav>
+  </div>
+  <p class="footer-copy">&copy; 2026 Ugly Cute. Todos os direitos reservados.</p>
+</footer>
+
+<div class="cart-backdrop" [class.is-open]="isCartOpen" (click)="toggleCart()"></div>
+<aside id="shopping-cart" class="cart-panel" [class.is-open]="isCartOpen" aria-label="Carrinho de compras">
+  <div class="cart-panel-header">
+    <div>
+      <h2>Seu carrinho</h2>
+      <p>{{ cartItemsCount }} item(ns)</p>
+    </div>
+    <button class="close-cart" type="button" (click)="toggleCart()" aria-label="Fechar carrinho">×</button>
+  </div>
+
+  @if (cart.length === 0) {
+    <div class="empty-cart">
+      <span aria-hidden="true">🛒</span>
+      <h3>Seu carrinho está vazio</h3>
+      <p>Adicione um elemental para começar.</p>
+    </div>
+  } @else {
+    <div class="cart-items">
+      @for (product of cart; track product.id) {
+        <article class="cart-item">
+          <img [src]="'assets/' + product.image" [alt]="product.name" />
+          <div class="cart-item-details">
+            <h3>{{ product.name }}</h3>
+            <span>{{ product.price | currency: 'BRL' }}</span>
+            <div class="quantity-controls" aria-label="Quantidade de {{ product.name }}">
+              <button type="button" (click)="changeQuantity(product, -1)" aria-label="Diminuir quantidade">−</button>
+              <strong>{{ product.quantity }}</strong>
+              <button type="button" (click)="changeQuantity(product, 1)" aria-label="Aumentar quantidade">+</button>
+            </div>
+          </div>
+          <button class="remove-cart-item" type="button" (click)="removeFromCart(product)" [attr.aria-label]="'Remover ' + product.name">Remover</button>
+        </article>
+      }
+    </div>
+
+    <div class="cart-summary">
+      <div>
+        <span>Total</span>
+        <strong>{{ cartTotal | currency: 'BRL' }}</strong>
+      </div>
+      <button (click)="finishOrder()" class="checkout-button" type="button">Finalizar pedido</button>
+    </div>
+  }
+</aside>
+
+
+<div class="filter-options" [class.is-open]="isFilterMenuOpen" aria-label="Opções de filtro de elementais">
+  <h5>Opções de elementais disponíveis!</h5>
+
+  @if (products.length === 0){
+    <p>Nenhum produto disponível para filtragem!</p>
+  } @else {
+    @for (product of products; track product.id){
+      <div class="option">
+        <input
+          type="checkbox"
+          [class]="'option-' + product.id"
+          [name]="'option-' + product.name"
+          [value]="product.name"
+          [checked]="selectedFilters.includes(product.name)"
+          (change)="onFilterChange(product.name, $any($event.target).checked)"
+        >
+        <label [for]="'option-' + product.name">{{product.name}}</label>
+      </div>
+    }
+  }
+</div>
+
+@if (cartNotice()) {
+  <div class="cart-notice" role="status" aria-live="polite">
+    <span aria-hidden="true">&check;</span>
+    <p>{{ cartNotice() }}</p>
+  </div>
+}
+
+<a
+  class="whatsapp-button"
+  [href]="url"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Entrar em contato pelo WhatsApp"
+>
+  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <path d="M16 3.1A12.9 12.9 0 0 0 5 22.8L3.5 28.5l5.9-1.5A12.9 12.9 0 1 0 16 3.1Zm0 23.5a10.7 10.7 0 0 1-5.5-1.5l-.4-.2-3.5.9.9-3.4-.2-.4A10.7 10.7 0 1 1 16 26.6Zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.8.2-.9 1-1.1 1.2-.4.3-.7.1a8.7 8.7 0 0 1-2.6-1.6 9.7 9.7 0 0 1-1.8-2.2c-.2-.3 0-.5.1-.7s.3-.4.5-.6c.2-.2.3-.4.5-.6s.2-.3 0-.5c-.2-.2-1-2.4-1.4-3.3s-.7-.8-1-.8h-.8c-.3 0-.7 0-1 .5s-1.3 1.6-1.3 3.9 1.4 4.5 1.6 4.8c.2.3 2.7 4.2 6.6 5.9a11 11 0 0 0 3 .5c1 .1 1.9.1 2.6.1s1-.1 1.4-.2c.4-.1 1.9-.8 2.2-1.5s.3-1 .3-1 .1-.4-.2-.6Z"></path>
+  </svg>
+  <span>WhatsApp</span>
+</a>

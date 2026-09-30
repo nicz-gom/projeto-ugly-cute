@@ -1,0 +1,21 @@
+:root{
+    --creme: #d8c495;
+}
+
+*{
+    border: 0;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    background-color: var(--creme);
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(95, 63, 29, .15) 0 1px, transparent 2px),
+        radial-gradient(circle at 75% 70%, rgba(255, 247, 206, .3) 0 1px, transparent 2px),
+        linear-gradient(115deg, rgba(77, 53, 28, .08), transparent 35%, rgba(77, 53, 28, .1));
+    background-size: 19px 19px, 27px 27px, auto;
+    color: #302416;
+}
