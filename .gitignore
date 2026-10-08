@@ -1,0 +1,20 @@
+# Dependências
+node_modules/
+
+# Builds
+dist/
+
+# Angular
+.angular/
+
+# Backend
+.env
+backend/src/generated/
+backend/.agents/
+backend/.claude/
+backend/.windsurf/
+backend/skills-lock.json
+
+# Sistema / editor
+.DS_Store
+Thumbs.db

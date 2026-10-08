@@ -1,13 +1,31 @@
 <div class="main">
-    <form class="form-main">
+    <form class="form-main" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
         <img class="logo" src="./../../../../assets/logo.png">
         <h1 class="title">Painel do Administrador</h1>
         <div class="dv-inpt">
-            <label class="gmail-lbl">Informe seu e-mail:</label>
-            <input class="gmail-inpt" type="text" placeholder="Informe o e-mail" required>
-            <label class="password-lbl">Informe sua senha:</label>
-            <input class="password-inpt" type="password" placeholder="Informa sua senha" required>
+            <label class="gmail-lbl" for="email">Informe seu e-mail:</label>
+            <input id="email" class="gmail-inpt" type="email" placeholder="Informe o e-mail"
+                formControlName="email" [class.invalid]="email.invalid && email.touched">
+            @if (email.touched && email.hasError('required')) {
+                <span class="error-msg">O e-mail é obrigatório.</span>
+            } @else if (email.touched && email.hasError('email')) {
+                <span class="error-msg">Informe um e-mail válido.</span>
+            }
+
+            <label class="password-lbl" for="password">Informe sua senha:</label>
+            <input id="password" class="password-inpt" type="password" placeholder="Informe sua senha"
+                formControlName="password" [class.invalid]="password.invalid && password.touched">
+            @if (password.touched && password.hasError('required')) {
+                <span class="error-msg">A senha é obrigatória.</span>
+            } @else if (password.touched && password.hasError('minlength')) {
+                <span class="error-msg">A senha deve ter no mínimo 6 caracteres.</span>
+            }
         </div>
-        <button class="access-bt" >Acessar</button>
+        @if (errorMessage()) {
+            <span class="error-msg">{{ errorMessage() }}</span>
+        }
+        <button class="access-bt" type="submit" [disabled]="loading()">
+            {{ loading() ? 'Entrando...' : 'Acessar' }}
+        </button>
     </form>
 </div>

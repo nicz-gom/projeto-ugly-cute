@@ -67,3 +67,13 @@
     background-color: var(--orange);
     color: var(--white);
 }
+
+.dv-inpt > input.invalid{
+    border: 1px solid #d9534f;
+}
+
+.error-msg{
+    color: #d9534f;
+    font-size: 13px;
+    margin: 4px 0 10px;
+}

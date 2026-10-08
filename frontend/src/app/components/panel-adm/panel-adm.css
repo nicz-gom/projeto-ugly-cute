@@ -1,0 +1,269 @@
+/* Estilos exclusivos do painel. O visual base vem do home.css. */
+
+/* #region Header */
+.admin-actions{
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-left: 24px;
+}
+
+.store-link,
+.logout-button{
+    border: 1px solid rgba(75, 49, 24, .65);
+    border-radius: 2px;
+    box-shadow: inset 0 1px rgba(255, 245, 199, .32), 1px 2px 2px rgba(41, 27, 13, .28);
+    color: var(--white);
+    cursor: pointer;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 12px;
+    text-decoration: none;
+    transition: background-color .2s ease, transform .2s ease;
+}
+
+.store-link{
+    background-color: var(--purple);
+}
+
+.store-link:hover{
+    background-color: #85679b;
+    transform: translateY(-2px);
+}
+
+.logout-button{
+    background-color: #8b506c;
+}
+
+.logout-button:hover{
+    background-color: #74405a;
+    transform: translateY(-2px);
+}
+/* #endregion */
+
+/* #region Banner (links com o mesmo visual dos botões da Home) */
+.banner .more-explorer,
+.banner .see-new{
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+/* #endregion */
+
+/* #region Resumo */
+.admin-stats{
+    display: grid;
+    gap: clamp(14px, 2vw, 24px);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    padding: 32px clamp(16px, 4vw, 56px) 0;
+}
+
+.stat-card{
+    background-color: #eadbb6;
+    background-image: linear-gradient(120deg, rgba(105, 72, 33, .1), transparent 35%, rgba(255, 249, 210, .22));
+    border: 1px solid #90734a;
+    border-radius: 3px;
+    box-shadow: 2px 3px 7px rgba(59, 39, 20, .3), inset 0 0 0 2px rgba(255, 242, 197, .25);
+    display: grid;
+    gap: 6px;
+    padding: 16px 18px;
+}
+
+.stat-card span{
+    color: #634a2c;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+}
+
+.stat-card strong{
+    color: var(--purple);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+}
+/* #endregion */
+
+/* #region Formulário de cadastro */
+.admin-form-section{
+    padding: 32px clamp(16px, 4vw, 56px);
+}
+
+.admin-form{
+    background-color: #eadbb6;
+    background-image: linear-gradient(120deg, rgba(105, 72, 33, .1), transparent 35%, rgba(255, 249, 210, .22));
+    border: 1px solid #90734a;
+    border-radius: 3px;
+    box-shadow: 2px 3px 7px rgba(59, 39, 20, .3), inset 0 0 0 2px rgba(255, 242, 197, .25);
+    display: grid;
+    gap: 16px 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: clamp(16px, 3vw, 28px);
+}
+
+.form-field{
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+.form-field-full{
+    grid-column: 1 / -1;
+}
+
+.form-field label{
+    color: #3c2b1b;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea{
+    background-color: #fbf5e4;
+    border: 1px solid #a78a5b;
+    border-radius: var(--input-radius);
+    color: #302416;
+    font-size: 14px;
+    padding: 10px 12px;
+    width: 100%;
+}
+
+.form-field textarea{
+    resize: vertical;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus{
+    outline: 2px solid var(--purple);
+    outline-offset: 1px;
+}
+
+.form-check{
+    align-items: center;
+    color: #3c2b1b;
+    display: flex;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+    gap: 8px;
+}
+
+.form-check input{
+    accent-color: var(--purple);
+    height: 16px;
+    width: 16px;
+}
+
+.form-buttons{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+/* #endregion */
+
+/* #region Botões (formulário e cards) */
+.save-button,
+.clear-button,
+.edit-button,
+.delete-button{
+    border: 1px solid rgba(75, 49, 24, .65);
+    border-radius: 2px;
+    box-shadow: inset 0 1px rgba(255, 245, 199, .32), 1px 2px 2px rgba(41, 27, 13, .28);
+    color: var(--white);
+    cursor: pointer;
+    font-family: Georgia, "Times New Roman", serif;
+    transition: background-color .2s, transform .2s;
+}
+
+.save-button,
+.clear-button{
+    font-size: 14px;
+    padding: 10px 18px;
+}
+
+.save-button{
+    background-color: var(--orange);
+}
+
+.save-button:hover{
+    background-color: #d18d22;
+    transform: translateY(-1px);
+}
+
+.clear-button{
+    background-color: #dbc79a;
+    color: #3c2b1b;
+}
+
+.clear-button:hover{
+    background-color: #cdb684;
+    transform: translateY(-1px);
+}
+
+.card-actions{
+    display: grid;
+    gap: 6px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.edit-button,
+.delete-button{
+    font-size: 12px;
+    padding: 8px 6px;
+}
+
+.edit-button{
+    background-color: var(--purple);
+}
+
+.edit-button:hover{
+    background-color: #85679b;
+    transform: translateY(-1px);
+}
+
+.delete-button{
+    background-color: #a3473f;
+}
+
+.delete-button:hover{
+    background-color: #8a3a33;
+    transform: translateY(-1px);
+}
+/* #endregion */
+
+/* #region Card de produto */
+.status-badge{
+    background-color: #5f7d4a;
+    border: 1px solid #45603a;
+    border-radius: 2px;
+    color: var(--white);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11px;
+    font-weight: 700;
+    left: 8px;
+    padding: 3px 8px;
+    position: absolute;
+    top: 8px;
+}
+/* #endregion */
+
+@media (max-width: 600px){
+    .admin-actions{
+        margin-left: auto;
+    }
+
+    .store-link,
+    .logout-button{
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .admin-form{
+        grid-template-columns: 1fr;
+    }
+
+    .form-buttons{
+        flex-direction: column-reverse;
+    }
+}

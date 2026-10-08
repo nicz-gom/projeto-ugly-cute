@@ -1,0 +1,155 @@
+<main id="inicio">
+  <header class="name">
+    <img class="logo" src="assets/logo.png" alt="Logo" aria-hidden="true" />
+    <div class="logo-search">
+      <div class="name-logo">
+        <h2 class="ugly">Ugly</h2>
+        <h2 class="cute">Cute</h2>
+      </div>
+      <div class="content-search">
+        <form>
+          <input
+            class="inSearch"
+            type="text"
+            placeholder="Buscar Elemental cadastrado - digite o nome..."
+          />
+          <button class="filter" type="button" aria-label="Abrir ou fechar filtros">
+            <img class="filter-icon" src="assets\filtro.png" alt="Filtro de pesquisa!">
+          </button>
+          <button class="btSearch" type="button"><img class="search-icon" src="assets\lupa.png" alt="Lupa icon">Pesquisar</button>
+        </form>
+      </div>
+    </div>
+    <nav class="main-nav" aria-label="Navegação do painel">
+      <a href="#inicio">Painel</a>
+      <a href="#cadastro">Cadastrar</a>
+      <a href="#products-title">Produtos</a>
+    </nav>
+    <div class="admin-actions">
+      <a class="store-link" href="/">Ver loja</a>
+      <button class="logout-button" type="button">Sair</button>
+    </div>
+  </header>
+
+  <section class="banner">
+    <img class="elemental-left" src="assets\green-elemental.png" alt="Elaris">
+    <div class="title">
+        <h2>PAINEL DO ADMINISTRADOR</h2>
+        <p>Cadastre, edite e organize as criaturas curiosas da loja.</p>
+        <div class="options">
+            <a class="more-explorer" href="#cadastro">Cadastrar Elemental</a>
+            <a class="see-new" href="#products-title">Gerenciar Produtos</a>
+        </div>
+    </div>
+    <img class="elemental-rigth" src="assets\noix.png" alt="Niox">
+  </section>
+
+  <section class="admin-stats" aria-label="Resumo da loja">
+    <article class="stat-card">
+      <span>Produtos cadastrados</span>
+      <strong>{{ products.length }}</strong>
+    </article>
+    <article class="stat-card">
+      <span>Produtos ativos</span>
+      <strong>{{ products.length }}</strong>
+    </article>
+    <article class="stat-card">
+      <span>Produtos inativos</span>
+      <strong>0</strong>
+    </article>
+  </section>
+
+  <section id="cadastro" class="admin-form-section" aria-labelledby="form-title">
+    <div class="showcase-heading">
+      <h2 id="form-title">Cadastrar Elemental</h2>
+      <p>Preencha os dados abaixo para adicionar um novo produto à loja.</p>
+    </div>
+
+    <form class="admin-form">
+      <div class="form-field">
+        <label for="product-name">Nome</label>
+        <input id="product-name" type="text" placeholder="Ex.: Elaris" />
+      </div>
+
+      <div class="form-field">
+        <label for="product-price">Preço (R$)</label>
+        <input id="product-price" type="number" min="0" step="0.01" placeholder="Ex.: 19,90" />
+      </div>
+
+      <div class="form-field">
+        <label for="product-category">Categoria</label>
+        <select id="product-category">
+          <option value="">Selecione...</option>
+          <option value="pelucia">Pelúcia</option>
+          <option value="chaveiro">Chaveiro</option>
+          <option value="decoracao">Decoração</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="product-image">Imagem</label>
+        <input id="product-image" type="file" accept="image/*" />
+      </div>
+
+      <div class="form-field form-field-full">
+        <label for="product-description">Descrição</label>
+        <textarea id="product-description" rows="3" placeholder="Conte um pouco sobre esse elemental..."></textarea>
+      </div>
+
+      <label class="form-check form-field-full">
+        <input type="checkbox" checked />
+        Produto ativo (visível na loja)
+      </label>
+
+      <div class="form-buttons form-field-full">
+        <button class="clear-button" type="button">Limpar</button>
+        <button class="save-button" type="button">Salvar produto</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="products-section" aria-labelledby="products-title">
+    <div class="products-heading">
+      <div>
+        <h2 id="products-title">Gerenciar produtos</h2>
+        <p>Edite ou exclua os elementais cadastrados.</p>
+      </div>
+      <span class="products-count">{{ products.length }} produtos</span>
+    </div>
+
+    <div class="products-grid">
+      @for (product of products; track product.id) {
+        <article class="product-card">
+          <span class="status-badge">Ativo</span>
+          <img [src]="'assets/' + product.image" [alt]="'Elemental ' + product.name" />
+          <div class="card-content">
+            <h3>{{ product.name }}</h3>
+            <span>{{ product.price | currency: 'BRL' }}</span>
+            <div class="card-actions">
+              <button class="edit-button" type="button" [attr.aria-label]="'Editar ' + product.name">Editar</button>
+              <button class="delete-button" type="button" [attr.aria-label]="'Excluir ' + product.name">Excluir</button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <img src="assets/logo.png" alt="Ugly Cute" />
+      <div>
+        <strong>Ugly <span>Cute</span></strong>
+        <p>Painel administrativo.</p>
+      </div>
+    </div>
+    <nav class="footer-links" aria-label="Links do rodapé">
+      <a href="#cadastro">Cadastrar</a>
+      <a href="#products-title">Produtos</a>
+      <a href="/">Ver loja</a>
+    </nav>
+  </div>
+  <p class="footer-copy">&copy; 2026 Ugly Cute. Todos os direitos reservados.</p>
+</footer>
