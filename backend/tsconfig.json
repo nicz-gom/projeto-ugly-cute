@@ -33,15 +33,15 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     // Recommended Options
-    "strict": true,
+    "strict": true, //liga as checagens rigorosas, como não premitir undefined sem tratamento
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "NodeNext", //seguem as regras de ESM do node. Por isso todo import relativo termina em .js, mesmo apontando para um aruivo ts: o import descreve o arquivo que existirá
     "skipLibCheck": true,
   },
-   "include": ["src", "prisma"]
+   "include": ["src", "prisma"] //diz quais pastas o typescript enxerga; pristma entra por causa do seed;
 }

@@ -3,16 +3,16 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
-generator client {
+generator client { //onde o typescript será gerado (src/generated/prisma) e qual provider será usado (prisma-client)
   provider = "prisma-client"
   output   = "../src/generated/prisma"
 }
 
-datasource db {
+datasource db { //Qual banco postgreSql a URL fica no prisma.config.ts
   provider = "postgresql"
 }
 
-model User {
+model User { 
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
@@ -23,8 +23,8 @@ model User {
   @@map("users")
 }
 
-model Product {
-  id        Int      @id @default(autoincrement())
+model Product { //uma tabela. Cada linha é uma coluna: nome, tipo, atributos
+  id        Int      @id @default(autoincrement())//chave primaria cresce sozinha
   name      String
   price     Decimal  @db.Decimal(10, 2)
   image     String
@@ -33,5 +33,6 @@ model Product {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt      @map("updated_at")
 
-  @@map("products")
+  @@map("products") //nome da coluna\ tabela no banco (snake_case); no código camel case
 }
+
