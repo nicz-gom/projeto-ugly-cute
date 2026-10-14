@@ -47,63 +47,80 @@
   <section class="admin-stats" aria-label="Resumo da loja">
     <article class="stat-card">
       <span>Produtos cadastrados</span>
-      <strong>{{ products.length }}</strong>
+      <strong>{{ products().length }}</strong>
     </article>
     <article class="stat-card">
       <span>Produtos ativos</span>
-      <strong>{{ products.length }}</strong>
+      <strong>{{ activeCount() }}</strong>
     </article>
     <article class="stat-card">
       <span>Produtos inativos</span>
-      <strong>0</strong>
+      <strong>{{ inactiveCount() }}</strong>
     </article>
   </section>
 
   <section id="cadastro" class="admin-form-section" aria-labelledby="form-title">
     <div class="showcase-heading">
-      <h2 id="form-title">Cadastrar Elemental</h2>
-      <p>Preencha os dados abaixo para adicionar um novo produto à loja.</p>
+      <h2 id="form-title">{{ isEditing() ? 'Editar Elemental' : 'Cadastrar Elemental' }}</h2>
+      <p>
+        {{ isEditing() ? 'Altere os dados e salve, ou cancele para voltar ao cadastro.' : 'Preencha os dados abaixo para adicionar um novo produto à loja.' }}
+      </p>
     </div>
 
-    <form class="admin-form">
+    <form class="admin-form" [formGroup]="productForm" (ngSubmit)="saveProduct()">
       <div class="form-field">
         <label for="product-name">Nome</label>
-        <input id="product-name" type="text" placeholder="Ex.: Elaris" />
+        <input id="product-name" type="text" placeholder="Ex.: Elaris" formControlName="name" />
       </div>
 
       <div class="form-field">
         <label for="product-price">Preço (R$)</label>
-        <input id="product-price" type="number" min="0" step="0.01" placeholder="Ex.: 19,90" />
+        <input id="product-price" type="number" min="0" step="0.01" placeholder="Ex.: 19,90" formControlName="price" />
       </div>
 
       <div class="form-field">
-        <label for="product-category">Categoria</label>
-        <select id="product-category">
-          <option value="">Selecione...</option>
-          <option value="pelucia">Pelúcia</option>
-          <option value="chaveiro">Chaveiro</option>
-          <option value="decoracao">Decoração</option>
+        <div class="label-row">
+          <label for="product-category">Categoria</label>
+          <button class="add-category-button" type="button" (click)="openCategoryModal()">+ Nova categoria</button>
+        </div>
+        <select id="product-category" formControlName="categoryId">
+          <option [ngValue]="0">Selecione...</option>
+          @for (category of categories(); track category.id) {
+            <option [ngValue]="category.id">{{ category.name }}</option>
+          }
         </select>
       </div>
 
       <div class="form-field">
         <label for="product-image">Imagem</label>
-        <input id="product-image" type="file" accept="image/*" />
+        <input id="product-image" type="text" placeholder="Ex.: 01_Elaris_site.png" formControlName="image" />
       </div>
 
       <div class="form-field form-field-full">
         <label for="product-description">Descrição</label>
-        <textarea id="product-description" rows="3" placeholder="Conte um pouco sobre esse elemental..."></textarea>
+        <textarea id="product-description" rows="3" placeholder="Conte um pouco sobre esse elemental..." formControlName="description"></textarea>
       </div>
 
       <label class="form-check form-field-full">
-        <input type="checkbox" checked />
+        <input type="checkbox" formControlName="active" />
         Produto ativo (visível na loja)
       </label>
 
+      <!-- Erro vindo do backend; só aparece quando productError() tem texto -->
+      @if (productError()) {
+        <span class="category-modal-error form-field-full">{{ productError() }}</span>
+      }
+
       <div class="form-buttons form-field-full">
-        <button class="clear-button" type="button">Limpar</button>
-        <button class="save-button" type="button">Salvar produto</button>
+        <!-- type="button": não envia o form; reset() volta os campos aos valores iniciais -->
+        <!-- No modo edição, o Limpar vira Cancelar edição (sai do modo e limpa o form) -->
+        <button class="clear-button" type="button" (click)="cancelEdit()">
+          {{ isEditing() ? 'Cancelar edição' : 'Limpar' }}
+        </button>
+        <!-- type="submit": dispara o (ngSubmit) do <form>; desabilitado enquanto salva -->
+        <button class="save-button" type="submit" [disabled]="savingProduct()">
+          {{ savingProduct() ? 'Salvando...' : isEditing() ? 'Salvar alterações' : 'Salvar produto' }}
+        </button>
       </div>
     </form>
   </section>
@@ -114,25 +131,37 @@
         <h2 id="products-title">Gerenciar produtos</h2>
         <p>Edite ou exclua os elementais cadastrados.</p>
       </div>
-      <span class="products-count">{{ products.length }} produtos</span>
+      <span class="products-count">{{ products().length }} produtos</span>
     </div>
 
-    <div class="products-grid">
-      @for (product of products; track product.id) {
-        <article class="product-card">
-          <span class="status-badge">Ativo</span>
-          <img [src]="'assets/' + product.image" [alt]="'Elemental ' + product.name" />
-          <div class="card-content">
-            <h3>{{ product.name }}</h3>
-            <span>{{ product.price | currency: 'BRL' }}</span>
-            <div class="card-actions">
-              <button class="edit-button" type="button" [attr.aria-label]="'Editar ' + product.name">Editar</button>
-              <button class="delete-button" type="button" [attr.aria-label]="'Excluir ' + product.name">Excluir</button>
+    @if (productsLoading()) {
+      <p class="no-results">Carregando produtos...</p>
+    } @else if (productsError()) {
+      <div class="products-feedback">
+        <p class="no-results">{{ productsError() }}</p>
+        <button class="clear-button" type="button" (click)="loadProducts()">Tentar de novo</button>
+      </div>
+    } @else if (products().length === 0) {
+      <p class="no-results">Nenhum produto cadastrado ainda. Use o formulário acima para cadastrar o primeiro.</p>
+    } @else {
+      <div class="products-grid">
+        @for (product of products(); track product.id) {
+          <article class="product-card" [class.is-editing]="editingProductId() === product.id">
+            <span class="status-badge" [class.is-inactive]="!product.active">{{ product.active ? 'Ativo' : 'Inativo' }}</span>
+            <img [src]="'assets/' + product.image" [alt]="'Elemental ' + product.name" />
+            <div class="card-content">
+              <h3>{{ product.name }}</h3>
+              <small class="product-category">{{ categoryName(product.categoryId) }}</small>
+              <span>{{ product.price | currency: 'BRL' }}</span>
+              <div class="card-actions">
+                <button class="edit-button" type="button" (click)="startEdit(product)" [attr.aria-label]="'Editar ' + product.name">Editar</button>
+                <button class="delete-button" type="button" (click)="askDelete(product)" [attr.aria-label]="'Excluir ' + product.name">Excluir</button>
+              </div>
             </div>
-          </div>
-        </article>
-      }
-    </div>
+          </article>
+        }
+      </div>
+    }
   </section>
 </main>
 
@@ -153,3 +182,78 @@
   </div>
   <p class="footer-copy">&copy; 2026 Ugly Cute. Todos os direitos reservados.</p>
 </footer>
+
+<!-- Modal de nova categoria: só existe no DOM enquanto isCategoryModalOpen() for true -->
+@if (isCategoryModalOpen()) {
+  <div class="category-modal-backdrop" (click)="closeCategoryModal()"></div>
+  <div
+    class="category-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="category-modal-title"
+    (keydown.escape)="closeCategoryModal()"
+  >
+    <div class="category-modal-header">
+      <h3 id="category-modal-title">Nova categoria</h3>
+      <button class="category-modal-close" type="button" (click)="closeCategoryModal()" aria-label="Fechar">×</button>
+    </div>
+
+    <!-- preventDefault impede o envio nativo do form, que recarregaria a página -->
+    <form (submit)="$event.preventDefault(); saveCategory()">
+      <div class="form-field">
+        <label for="new-category-name">Nome da categoria</label>
+        <input
+          id="new-category-name"
+          type="text"
+          placeholder="Ex.: Chaveiro"
+          autofocus
+          [value]="newCategoryName()"
+          (input)="newCategoryName.set($any($event.target).value)"
+        />
+      </div>
+
+      @if (categoryError()) {
+        <span class="category-modal-error">{{ categoryError() }}</span>
+      }
+
+      <div class="form-buttons">
+        <button class="clear-button" type="button" (click)="closeCategoryModal()">Cancelar</button>
+        <button class="save-button" type="submit" [disabled]="savingCategory()">
+          {{ savingCategory() ? 'Salvando...' : 'Salvar categoria' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}
+
+<!-- Modal de confirmação de exclusão: aparece quando productToDelete() tem um produto -->
+@if (productToDelete(); as product) {
+  <div class="category-modal-backdrop" (click)="closeDeleteModal()"></div>
+  <div
+    class="category-modal"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="delete-modal-title"
+    (keydown.escape)="closeDeleteModal()"
+  >
+    <div class="category-modal-header">
+      <h3 id="delete-modal-title">Excluir produto</h3>
+      <button class="category-modal-close" type="button" (click)="closeDeleteModal()" aria-label="Fechar">×</button>
+    </div>
+
+    <p class="delete-modal-text">
+      Tem certeza que deseja excluir <strong>{{ product.name }}</strong>? Essa ação não pode ser desfeita.
+    </p>
+
+    @if (deleteError()) {
+      <span class="category-modal-error">{{ deleteError() }}</span>
+    }
+
+    <div class="form-buttons">
+      <button class="clear-button" type="button" (click)="closeDeleteModal()">Cancelar</button>
+      <button class="delete-button delete-confirm" type="button" (click)="confirmDelete()" [disabled]="deletingProduct()">
+        {{ deletingProduct() ? 'Excluindo...' : 'Excluir' }}
+      </button>
+    </div>
+  </div>
+}

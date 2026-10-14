@@ -28,7 +28,9 @@ model Product { //uma tabela. Cada linha é uma coluna: nome, tipo, atributos
   name      String
   price     Decimal  @db.Decimal(10, 2)
   image     String
-  category  String?
+  categoryId Int     @map("category_id") //nome da coluna no banco (snake_case); no código camel case
+  category  Category @relation(fields: [categoryId], references: [id])
+  description String?
   active    Boolean  @default(true)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt      @map("updated_at")
@@ -36,3 +38,10 @@ model Product { //uma tabela. Cada linha é uma coluna: nome, tipo, atributos
   @@map("products") //nome da coluna\ tabela no banco (snake_case); no código camel case
 }
 
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  Products  Product[]//chave estrangeira de categoria para produto, a relação e expressa dos dois lados
+
+  @@map("categories")
+}

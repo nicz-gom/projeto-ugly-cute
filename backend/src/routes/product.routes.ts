@@ -10,8 +10,11 @@ const productSchema = z.object({
   name: z.string().min(1),
   price: z.number().positive(),
   image: z.string().min(1),
-  category: z.string().optional(),
+  categoryId: z.number().int().positive(),
+  description: z.string().optional(),
+  active: z.boolean().optional(),
 });
+
 
 // público: lista para a Home
 router.get('/', async (_req, res) => {

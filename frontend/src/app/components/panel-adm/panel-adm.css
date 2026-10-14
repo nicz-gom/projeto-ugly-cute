@@ -106,6 +106,20 @@
     min-width: 0;
 }
 
+#product-image{
+    cursor: pointer;    
+}
+
+#product-image::file-selector-button{
+    bcackground-color: #fbf5e4;
+    border: 1px solid #a78a5b;
+    border-radius: var(--input-radius);
+    color: #3c2b1b;
+    cursor: pointer;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;    
+}
+
 .form-field-full{
     grid-column: 1 / -1;
 }
@@ -267,3 +281,151 @@
         flex-direction: column-reverse;
     }
 }
+
+/* #region Modal de nova categoria */
+.label-row{
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.add-category-button{
+    background-color: transparent;
+    border: 1px dashed #90734a;
+    border-radius: 2px;
+    color: #634a2c;
+    cursor: pointer;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    transition: background-color .2s, color .2s;
+}
+
+.add-category-button:hover{
+    background-color: var(--purple);
+    border-style: solid;
+    color: var(--white);
+}
+
+.category-modal-backdrop{
+    background-color: rgba(30, 20, 10, .55);
+    inset: 0;
+    position: fixed;
+    z-index: 2000;
+}
+
+.category-modal{
+    background-color: #eadbb6;
+    background-image: linear-gradient(120deg, rgba(105, 72, 33, .1), transparent 35%, rgba(255, 249, 210, .22));
+    border: 3px double #90734a;
+    border-radius: 3px;
+    box-shadow: 0 12px 32px rgba(25, 19, 10, .45);
+    display: grid;
+    gap: 16px;
+    left: 50%;
+    max-width: calc(100% - 32px);
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    z-index: 2001;
+    animation: category-modal-enter .2s ease-out;
+}
+
+.category-modal form{
+    display: grid;
+    gap: 14px;
+}
+
+.category-modal-header{
+    align-items: center;
+    border-bottom: 1px solid #a78a5b;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.category-modal-header h3{
+    color: var(--purple);
+    font-family: Georgia, "Times New Roman", serif;
+    font-variant: small-caps;
+    letter-spacing: .04em;
+}
+
+.category-modal-close{
+    background-color: #dbc79a;
+    border: 1px solid #987950;
+    border-radius: 2px;
+    color: #3c2b1b;
+    cursor: pointer;
+    font-size: 20px;
+    height: 30px;
+    line-height: 1;
+    width: 30px;
+}
+
+.category-modal-error{
+    color: #a3473f;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.save-button:disabled{
+    cursor: wait;
+    opacity: .7;
+}
+
+@keyframes category-modal-enter{
+    from{
+        opacity: 0;
+        transform: translate(-50%, -46%);
+    }
+}
+/* #endregion */
+
+/* #region Lista de produtos (estados e detalhes) */
+.products-feedback{
+    display: grid;
+    gap: 12px;
+    justify-items: center;
+}
+
+.product-category{
+    color: #634a2c;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.status-badge.is-inactive{
+    background-color: #8a7a66;
+    border-color: #6b5d4c;
+}
+/* #endregion */
+
+/* #region Edição e exclusão */
+/* Destaca o card do produto que está sendo editado no formulário */
+.product-card.is-editing{
+    outline: 3px solid var(--orange);
+    outline-offset: 2px;
+}
+
+.delete-modal-text{
+    color: #3c2b1b;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.5;
+}
+
+.delete-confirm{
+    font-size: 14px;
+    padding: 10px 18px;
+}
+
+.delete-button:disabled{
+    cursor: wait;
+    opacity: .7;
+}
+/* #endregion */

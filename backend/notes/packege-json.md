@@ -1,0 +1,44 @@
+## Anotações do packege-json
+
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts", //roda o tipesript em watch mode, ou seja, recompila e roda o server.ts a cada mudança
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "db:migrate": "prisma migrate dev", //roda as migrations do prisma, ou seja, cria/atualiza o banco de dados de acordo com o schema.prisma
+    "db:generate": "prisma generate", //gera o client do prisma, ou seja, cria o client do prisma de acordo com o schema.prisma
+    "db:studio": "prisma studio", //abre o studio do prisma
+    "db:seed": "prisma db seed", //roda o seed do prisma
+    "db:reset": "prisma migrate reset" //reseta o banco de dados, ou seja, apaga tudo e recria o banco de dados do zero
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module", //faz o node user ESM, ou seja, import/export em vez de require/module.exports
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.4",
+    "@types/pg": "^8.23.1",
+    "prisma": "^7.10.0",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
+  }
+}
